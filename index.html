@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>title</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+  </head>
+  <body>
+  
+  <style>
+		.teal {border:5px dotted teal;background-color:#eafafb;}
+  </style>
+  
+  <script>
+	function openAttachment() {
+		document.getElementById('attachment').click();
+		console.log("openAttachment");
+	}
+
+	function fileSelected(input){
+		//document.getElementById('btnAttachment').value = "File: " + input.files[0].name
+		console.log("fileSelected-- " +input.files[0].name);
+		var file = input.files[0];
+	    if (!file) {
+			console.log("YES FILE");
+		}
+		else{
+		 console.log("NO FILE");
+		}
+	}
+  </script>
+
+     <!-- page content -->
+	 <input type="file" class="file" id="attachment" style="display: none;" onchange="fileSelected(this)"/>
+     <!--input type="button" class="file" id="btnAttachment"   onclick="openAttachment()" value="File"/ -->
+	 <h1>Here will be our button</h1>
+     <button type="button" id="btnAttachment" onclick="openAttachment()">FileOpen</button>
+     <button type="button">Click2</button>
+  </body>
+</html>
