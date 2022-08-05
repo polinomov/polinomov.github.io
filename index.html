@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>title</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script src="js_plumbing.js"></script>
   </head>
   <body>
   
@@ -29,13 +29,36 @@
 		 console.log("NO FILE");
 		}
 	}
+	
+	function callWasm()
+	{
+		console.log("CallWasm");
+        const result = Module.ccall('Add',
+             'number',
+             ['number', 'number'],
+             [1, 2]);
+         document.getElementsByName('displayRes')[0].value= result;
+         console.log(`Result: ${result}`);
+	}
+	
+	function callWasm1()
+	{
+		console.log("CallWasm");
+        const result = Module.ccall('Add',
+             'number');
+         document.getElementsByName('displayRes')[0].value= result;
+         console.log(`Result: ${result}`);
+	}
   </script>
 
      <!-- page content -->
 	 <input type="file" class="file" id="attachment" style="display: none;" onchange="fileSelected(this)"/>
      <!--input type="button" class="file" id="btnAttachment"   onclick="openAttachment()" value="File"/ -->
-	 <h1>Here will be our button</h1>
+	 <h1>Wasm Test</h1>
      <button type="button" id="btnAttachment" onclick="openAttachment()">FileOpen</button>
-     <button type="button">Click2</button>
+     <button type="button" onclick="callWasm()">CallWasm1</button>
+	 <h1>Result</h1>
+	 <label for="displayRes">time in seconds: </label>
+	 <input type="textbox" id="testResult" name="displayRes"/>
   </body>
 </html>
