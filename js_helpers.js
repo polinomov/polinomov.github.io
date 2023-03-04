@@ -16,16 +16,35 @@ function callWasm1() {
     const result = Module.ccall('CallCFunc', 'number');
 }
 
-function Blah() {
-    console.log("Hello TestMe5\n");
-    //context.fillStyle = "red";
-    //context.fillRect(100, 100, 100, 100);
-    //callWasm1();
-    //toggleFullScreen();
+function OnTest() {
+    console.log("Hello TestMe JS-\n");
+    test_cb = Module.cwrap('OnTestJS', 'number', ['number']);
+    test_cb(4);
+    //resize_cb = Module.cwrap('CallCFunc2', 'number', ['number','number'] , { async: true });
+    //resize_cb(window.innerWidth, window.innerHeight);
+    /*
+    let promise = new Promise(function(resolve, reject) {
+        console.log("--Exe promise---");
+        setTimeout(() => {
+            console.log("Delayed for 1 second.");
+          }, "10000")
+          
+        console.log("--Exe promise 2" );
+         resolve();
+    });
+ 
+    console.log("---here--------");
+    
+    promise.then(
+        result => alert(result), 
+        error => alert(error) 
+    );
+    */
+    
 }
 
-function OnDraw() {
-}
+//function OnDraw() {
+//}
 
 function OnMouseMove(e) {
     
@@ -35,7 +54,8 @@ function OnMouseMove(e) {
 }
 
 function OnFileSelected(input) {
-    console.log("---fileSelected-- " + input.files[0].name);
+    //console.log("---fileSelected-- " + input.files[0].name);
+    document.getElementById('GFG').innerHTML='Reading: ' + input.files[0].name;
     var file = input.files[0];
     if (!file) {
         console.log("NO FILE");
@@ -46,14 +66,15 @@ function OnFileSelected(input) {
     var reader = new FileReader();
     reader.onload = function (e) {
         // binary data
+       
        console.log("-reader-onload-");
        var data = reader.result;
        var array = new Uint8Array(data);
        var res_ptr = Module._malloc(fz);
        Module.HEAPU8.set(array, res_ptr);
-       file_cb = Module.cwrap('FileBinData', 'number', ['arrayPointer', 'number']);
+       file_cb = Module.cwrap('FileBinData', 'number', ['arrayPointer', 'number'],{ async: true });
        file_cb(res_ptr, fz);
-       // console.log("done  reading");
+      // Module._free(res_ptr);
     };
     reader.onloadend = function (e) {
        console.log("load done");
@@ -63,7 +84,9 @@ function OnFileSelected(input) {
         // error occurred
         console.log('Error : ' + e.type);
     };
+   // document.getElementById('GFG1').innerHTML='-JSStart'
     reader.readAsArrayBuffer(input.files[0]);  
+   // document.getElementById('GFG1').innerHTML='-JSDone'
 }
 
 function OnFileOpen() {
@@ -75,6 +98,19 @@ function resizeCanvas() {
     // console.log("Resize w=" + window.innerWidth + " h=" + window.innerHeight);
     resize_cb = Module.cwrap('CallCFunc', 'number', ['number','number']);
     resize_cb(window.innerWidth, window.innerHeight);
+}
+
+function onTestCheckClick(cb){
+    ch_cb = Module.cwrap('OnDebugCheckBox', 'number', ['number']);
+    if(cb.checked){
+         ch_cb(1);
+    }else{
+        ch_cb(0);
+    }
+ }
+
+function OnTestButton(){
+
 }
 
 function OnLoaded() {  
