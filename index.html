@@ -56,6 +56,10 @@
             margin: 0;
         }
 
+        .dropbtn:hover {
+            background-color: #444; 
+        }
+
         .dropdown-content {
             display: none;
             position: absolute;
@@ -98,39 +102,40 @@
             <input type="file" class="file" id="attachment" style="display: none;" accept=".xyz,.las,.ply" onchange="OnFileSelected(this)" />
             <button type="button" class="dropbtn" onclick="OnFileOpen()"class="thebutton">File</button>
             <button class="dropbtn" onclick="OnTest()">Test</button>
-            
             <button class="dropbtn" id="camBtn" onclick="myFunction('camBtn','cameraDropdown')">Camera</button>
             <div class="dropdown-content" id="cameraDropdown">
-                <button class="thebutton">------+-------------------------</button>
-                <button class="thebutton">------+-------------------------</button>
-                <button class="thebutton">------+-------------------------</button>
-                
+                <button class="thebutton">Reset</button>
+                <input type="radio">
+                <input type="radio">           
                 <div class="horgrp">
-                    <button class="thebutton">Fov</button>
-                    <input class="thebutton" type="number" min="10" max="80"/> 
+                    <input type="radio">
+                    <input type="radio">
                 </div>
-            
-           </div>
-        
+            </div>
             <button class="dropbtn" id="viewBtn" onclick="myFunction('viewBtn','viewDropdown')">View</button>
             <div class="dropdown-content" id="viewDropdown">
                 <button class="thebutton">Item1 </button>
                 <button class="thebutton">Item2 </button>
             </div>
- 
+            <small class="thetext">Fov:</small>
+            <input class="thespin" type="number" min="10" max="80" value="35"/> 
+            <small class="thetext">Size:</small>
+            <input class="thespin" type="number" min="1" max="10" value="2"/> 
             <button class="dropbtn" id="helpBtn">Help</button>
         </div> 
-     </div>
+    </div>
  
     <div>
         <canvas id="canvas" oncontextmenu="event.preventDefault()" style="border-left-style: none;"></canvas>
     </div>
- 
-        <script type='text/javascript'>
-            var Module = {
-                canvas: (function () { return document.getElementById('canvas'); })()
-            };
-        </script>
+    
+    <script type='text/javascript'>
+        var Module = {
+            canvas: (function () { return document.getElementById('canvas'); })()
+        };
+    </script>
+
+
         <script>
             var openedDropDownid;
             function myFunction(parButton,dropId) {
@@ -171,6 +176,7 @@
              
             }
        </script>
+       
         <script src="index.js"></script>
         <script src="js_helpers.js"></script>
         <div id="GFG" style="background-color: black;font-size:12px; color:white; height:15px;" >
