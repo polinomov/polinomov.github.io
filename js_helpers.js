@@ -173,6 +173,7 @@ class ProscessEventsClass {
             case "ArrowRight": gCamRotCb(1, 0, this.ctrlOn, 200); break;
             case "Control": this.ctrlOn = 1; break;
             case "r" : OnTest(-1); break;
+            case "t" : OnTest(-2); break;
         }
     }
 
