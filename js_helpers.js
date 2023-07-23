@@ -12,6 +12,7 @@ var gv = new GlobVars();
 
 var gCamRotCb;
 var gCamMoveCb;
+var gUIChangeCB;
 
 function callWasm1() {
     console.log("CallWasm");
@@ -70,8 +71,9 @@ function OnFileOpen() {
 
 
 function resizeCanvas() {
-    // console.log("Resize w=" + window.innerWidth + " h=" + window.innerHeight);
     resize_cb = Module.cwrap('CallCFunc', 'number', ['number', 'number']);
+    document.getElementById('canvas').height = window.innerHeight;
+    document.getElementById('canvas').width = window.innerWidth;
     resize_cb(window.innerWidth, window.innerHeight);
 }
 
@@ -91,6 +93,13 @@ function OnPtSizeChanged(){
     var v = document.getElementById("ptSize").value; 
     ui_cb = Module.cwrap('OnUIChangeJS', 'number', ['number', 'number']);
     ui_cb(3,v);
+}
+
+function OnBkhanged(){
+    var vs = document.getElementById("bkcolor").value; 
+    var vi =  "0x"+vs.slice(1);
+    var v = parseInt(vi);
+    gUIChangeCB(4,v);
 }
 
 class ProscessEventsClass {
@@ -206,8 +215,9 @@ function OnLoaded() {
 
 function OnStart() {
     console.log("-OnStart-\n");
-    gCamRotCb =  Module.cwrap('CameraRotateJS', 'number', 'number', 'number', 'number',['number']);
-    gCamMoveCb = Module.cwrap('CameraMoveJS', 'number', ['number','number']);
+    gCamRotCb   = Module.cwrap('CameraRotateJS', 'number', 'number', 'number', 'number',['number']);
+    gCamMoveCb  = Module.cwrap('CameraMoveJS', 'number', ['number','number']);
+    gUIChangeCB = Module.cwrap('OnUIChangeJS', 'number', ['number', 'number']);
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas, false);
     window.addEventListener('keydown', (event) => { ProcessEvents.onKeyDown(event); }, false);
@@ -219,6 +229,9 @@ function OnStart() {
     el.addEventListener('mousedown', (event) => { ProcessEvents.onMouseDown(event); }, false);
     el.addEventListener('mousewheel', (event) => { ProcessEvents.onMouseWheel(event); }, false);
     el.addEventListener('wheel', (event) => { ProcessEvents.onWheel(event); }, false);
+
+    const color = document.getElementById("bkcolor");
+    color.addEventListener('input', function(e) {OnBkhanged();});
     //el.addEventListener('button', (event) => { ProcessEvents.onButton(event); }, false);
 }
 
