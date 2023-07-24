@@ -218,7 +218,7 @@ function OnStart() {
     gCamRotCb   = Module.cwrap('CameraRotateJS', 'number', 'number', 'number', 'number',['number']);
     gCamMoveCb  = Module.cwrap('CameraMoveJS', 'number', ['number','number']);
     gUIChangeCB = Module.cwrap('OnUIChangeJS', 'number', ['number', 'number']);
-    resizeCanvas();
+   // resizeCanvas();
     window.addEventListener('resize', resizeCanvas, false);
     window.addEventListener('keydown', (event) => { ProcessEvents.onKeyDown(event); }, false);
     window.addEventListener('keyup', (event) => { ProcessEvents.onKeyUp(event); }, false);
