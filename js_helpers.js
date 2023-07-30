@@ -1,7 +1,6 @@
 
-//const myPics = document.getElementById('myPics');
-//const context = myPics.getContext('2d');
-// document.getElementById("radioButtonX").disabled = true;
+  
+
 var htmlCanvas;
 var context;
 class GlobVars {
@@ -77,29 +76,43 @@ function resizeCanvas() {
     resize_cb(window.innerWidth, window.innerHeight);
 }
 
-function OnFovChanged(){
-    var v = document.getElementById("fovVal").value; 
-    ui_cb = Module.cwrap('OnUIChangeJS', 'number', ['number', 'number']);
-    ui_cb(1,v);
+function forceResize(){
+    window.dispatchEvent(new Event('resize'));
 }
 
-function OnBudgetChanged(){
-    var v = document.getElementById("budVal").value; 
-    ui_cb = Module.cwrap('OnUIChangeJS', 'number', ['number', 'number']);
-    ui_cb(2,v);
-}
-
-function OnPtSizeChanged(){
-    var v = document.getElementById("ptSize").value; 
-    ui_cb = Module.cwrap('OnUIChangeJS', 'number', ['number', 'number']);
-    ui_cb(3,v);
-}
-
-function OnBkhanged(){
+function GetBkColorValue(){
     var vs = document.getElementById("bkcolor").value; 
     var vi =  "0x"+vs.slice(1);
     var v = parseInt(vi);
-    gUIChangeCB(4,v);
+    return v;    
+}
+
+function GetBudgetValue(){
+    return  document.getElementById("budVal").value; 
+}
+
+function GetPtSizeValue(){
+    return document.getElementById("ptSize").value; 
+}
+
+function GetFovValue(){
+    return document.getElementById("fovVal").value; 
+}
+
+function OnFovChanged(){
+   gUIChangeCB(1,GetFovValue());
+}
+
+function OnBudgetChanged(){
+    gUIChangeCB(2,GetBudgetValue());
+}
+
+function OnPtSizeChanged(){
+   gUIChangeCB(3,GetPtSizeValue());
+}
+
+function OnBkhanged(){
+    gUIChangeCB(4, GetBkColorValue());
 }
 
 class ProscessEventsClass {
@@ -218,7 +231,7 @@ function OnStart() {
     gCamRotCb   = Module.cwrap('CameraRotateJS', 'number', 'number', 'number', 'number',['number']);
     gCamMoveCb  = Module.cwrap('CameraMoveJS', 'number', ['number','number']);
     gUIChangeCB = Module.cwrap('OnUIChangeJS', 'number', ['number', 'number']);
-   // resizeCanvas();
+    resizeCanvas();
     window.addEventListener('resize', resizeCanvas, false);
     window.addEventListener('keydown', (event) => { ProcessEvents.onKeyDown(event); }, false);
     window.addEventListener('keyup', (event) => { ProcessEvents.onKeyUp(event); }, false);
@@ -232,8 +245,9 @@ function OnStart() {
 
     const color = document.getElementById("bkcolor");
     color.addEventListener('input', function(e) {OnBkhanged();});
-    //el.addEventListener('button', (event) => { ProcessEvents.onButton(event); }, false);
-}
+    // disable some elements
+    //document.getElementById("colrgb").disabled = true;
+ }
 
 
 
