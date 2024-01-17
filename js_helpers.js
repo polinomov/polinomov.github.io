@@ -12,6 +12,7 @@ var gv = new GlobVars();
 var gCamRotCb;
 var gCamMoveCb;
 var gUIChangeCB;
+var gIdChanged = "unknown"
 
 function callWasm1() {
     console.log("CallWasm");
@@ -99,21 +100,26 @@ function GetFovValue(){
     return document.getElementById("fovVal").value; 
 }
 
-function OnFovChanged(){
-   gUIChangeCB(1,GetFovValue());
+function GetUIString(){
+    return gIdChanged;
 }
 
-function OnBudgetChanged(){
-    gUIChangeCB(2,GetBudgetValue());
+function OnUIEvent1(input){
+    gIdChanged = input.id;
+    var elType = document.getElementById(input.id).type;
+    if(elType == "checkbox"){
+        gUIChangeCB(123,document.getElementById(input.id).checked );
+    }else{
+        gUIChangeCB(123, document.getElementById(input.id).value);
+    }
 }
 
-function OnPtSizeChanged(){
-   gUIChangeCB(3,GetPtSizeValue());
+function OnBkhanged(input){
+    gIdChanged = 'bkgcol';
+    var val = GetBkColorValue(); 
+    gUIChangeCB(123,val);
 }
 
-function OnBkhanged(){
-    gUIChangeCB(4, GetBkColorValue());
-}
 
 class ProscessEventsClass {
     constructor() {
@@ -244,7 +250,7 @@ function OnStart() {
     el.addEventListener('wheel', (event) => { ProcessEvents.onWheel(event); }, false);
 
     const color = document.getElementById("bkcolor");
-    color.addEventListener('input', function(e) {OnBkhanged();});
+    color.addEventListener('input', function(e) {OnBkhanged(e);});
     // disable some elements
     //document.getElementById("colrgb").disabled = true;
  }
