@@ -67,6 +67,27 @@ function OnFileSelected(input) {
     reader.readAsArrayBuffer(input.files[0]);
 }
 
+function OnSampleLoad(){
+    console.log("OnSampleLoad");
+    const req = new XMLHttpRequest();
+    //req.open("GET", "https://drive.google.com/file/d/1HYSlnX1xQ79pwgYSU50yz7uguVv9iSpb/view?usp=sharing", true);
+    req.open("GET", "/sample.las", true);
+    req.responseType = "arraybuffer";
+
+    req.onload = (event) => {
+        const arrayBuffer = req.response; // Note: not req.responseText
+        if (arrayBuffer) {
+            const byteArray = new Uint8Array(arrayBuffer);
+                console.log(" here byteArray" + byteArray.length)
+                byteArray.forEach((element, index) => {
+                // do something with each byte in the array
+                //console.log(" here byteArray")
+            });
+        }
+    };
+    req.send(null);
+}
+
 function OnFileOpen() {
     document.getElementById('attachment').click();
 }
