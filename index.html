@@ -137,7 +137,7 @@
             <input class="thespin" id="fovVal" onclick="OnUIEvent1(this)" type="number" min="1" max="80" value="20"/> 
 
             <small class="thetext">Size:</small>
-            <input class="thespin" id="ptSize" type="number" onclick="OnUIEvent1(this)" min="1" max="10" value="2"/> 
+            <input class="thespin" id="ptSize" type="number" onclick="OnUIEvent1(this)" min="1" max="7" value="2"/> 
 
             <small class="thetext" title="Rendering budget">Budget:</small>
             <input class="thespin" id="budVal" onclick="OnUIEvent1(this)" type="number" min="1" max="100" value="18"/> 
@@ -145,8 +145,12 @@
             <small class="thetext">DrawAll:</small>
             <input type="checkbox"  title="Render All" id="rdAll"  onchange="OnUIEvent1(this)"/>
 
-            <input type="color" title="Background Color" id="bkcolor" value="#010181">
+            <small class="thetext">Ruler:</small>
+            <input type="checkbox"  title="Ruler" id="ruler"  onchange="OnUIEvent1(this)"/>
+
+            <input type="color" title="Background Color" id="bkcolor" value="#202020">
             <small id="GFG" class="thetext"> </small>
+
            </div> 
     </div>
 
@@ -180,14 +184,12 @@
                 myEl.style.left = lpos + "px";
                 document.getElementById(dropId).classList.toggle("show");
                 openedDropDownid = dropId;
-                UpdateColorModeUI();
+                //UpdateColorModeUI();
             }
             
             // Close the dropdown if the user clicks outside of it
             window.onclick = function(e) {
                 if(e.target.getAttribute('id')=='canvas'){
-                    //console.log("---click---- " + e.target.getAttribute('id')); 
-                   // console.log("---click---- " + e.btnCode); 
                     var myDropdown1 = document.getElementById(openedDropDownid);
                     if(myDropdown1 != null){
                         if (myDropdown1.classList.contains('show')) {

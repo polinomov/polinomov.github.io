@@ -13,6 +13,8 @@ var gCamRotCb;
 var gCamMoveCb;
 var gCamDbClickCB;
 var gUIChangeCB;
+var gMouseMoveCB;
+var gMouseClickCB;
 var gIdChanged = "unknown"
 var gDisableRdb = 0;
 
@@ -23,13 +25,11 @@ function callWasm1() {
 }
 
 function OnTest( v) {
-    console.log("Hello TestMe JS-\n");
     test_cb = Module.cwrap('OnTestJS', 'number', ['number']);
     test_cb(v);
 }
 
 function OnMouseMove(e) {
-
     gv.mouseX = e.offsetX;
     gv.mouseY = e.offsetY;
     OnDraw();
@@ -175,7 +175,7 @@ function OnFileSelected(input) {
         reader.readAsArrayBuffer(blob);
     }
 
-    //readMemBlock(currSz_,totSz_);
+    //readMemBlock(currSz_,totSz_);\
     readMemBlock(currSz_, chunkSz_);  
 } //OnFileSelected
 
@@ -217,7 +217,13 @@ function OnFileOpen() {
     document.getElementById('attachment').click();
 }
 
-
+/*
+'2d'
+'webgl'
+'webgl2'
+'experimental-webgl'
+'bitmaprenderer'
+*/
 function resizeCanvas() {
     resize_cb = Module.cwrap('CallCFunc', 'number', ['number', 'number']);
     document.getElementById('canvas').height = window.innerHeight;
@@ -279,6 +285,9 @@ function OnUIEvent1(input){
     }else{
         gUIChangeCB(123, document.getElementById(input.id).value);
     }
+    if( input.id == "ruler"){
+        setRuler(document.getElementById(input.id).checked); 
+    }
     // gray out some UI elements
     if( input.id == "camOrto"){
         fovEl = document.getElementById("fovVal");
@@ -312,6 +321,7 @@ class ProscessEventsClass {
         this.action = 0;
         this.posX = -1;
         this.posY = -1;
+        this.isRuler = 0;
     };
 
     onMouseUp(e) {
@@ -324,7 +334,6 @@ class ProscessEventsClass {
     }
 
     onDbClick(e){
-        console.log("DBclick: x= " + e.clientX + " y="+e.clientY);
         gCamDbClickCB(e.clientX,e.clientY);
     }
 
@@ -334,6 +343,9 @@ class ProscessEventsClass {
         this.posY = e.clientY;
         if(e.button==0){//left
             this.action = 1; //rotate
+            if(this.isRuler===1){
+               // gMouseClickCB(0,0);
+            }
         }
         if(e.button==2){//right
             console.log("btnCode="+ e.button);
@@ -342,6 +354,9 @@ class ProscessEventsClass {
     }
 
     onMouseMove(e) {
+        if(this.isRuler===1){
+           gMouseMoveCB( e.clientX,e.clientY);
+        }
         if (this.mouseOn == 1) {
             let dx = e.clientX - this.posX;
             let dy = e.clientY - this.posY;
@@ -380,6 +395,9 @@ class ProscessEventsClass {
         if (e.key == "Control") {
             this.ctrlOn = 0;
         }
+        if((e.key == "m")||(e.key == "M")){
+            OnTest(1); // Select
+        }
     }
 
     onKeyDown(e) {
@@ -390,7 +408,7 @@ class ProscessEventsClass {
             case "ArrowRight": gCamRotCb(1, 0, this.ctrlOn, 200); break;
             case "Control": this.ctrlOn = 1; break;
             case "r" : OnTest(-1); break;
-            case "t" : OnTest(-2); break;
+            case "t" : OnTest(-2); break; 
         }
     }
 
@@ -400,6 +418,10 @@ class ProscessEventsClass {
 }
 
 var ProcessEvents = new ProscessEventsClass();
+
+function setRuler(v){
+    ProcessEvents.isRuler = (v === true) ? 1:0;
+}
 
 function onTestCheckClick(cb) {
     ch_cb = Module.cwrap('OnDebugCheckBox', 'number', ['number']);
@@ -427,6 +449,8 @@ function OnStart() {
     gCamMoveCb  = Module.cwrap('CameraMoveJS', 'number', ['number','number']);
     gCamDbClickCB = Module.cwrap('CameraMoveDbClickJS', 'number', ['number','number']);
     gUIChangeCB = Module.cwrap('OnUIChangeJS', 'number', ['number', 'number']);
+    gMouseMoveCB = Module.cwrap('MouseMoveJS', 'number', ['number', 'number']);
+    gMouseClickCB =  Module.cwrap('MouseClickJS', 'number', ['number', 'number']);
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas, false);
     window.addEventListener('keydown', (event) => { ProcessEvents.onKeyDown(event); }, false);
