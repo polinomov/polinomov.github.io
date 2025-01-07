@@ -30,6 +30,22 @@ function OnTest( v) {
     test_cb(v);
 }
 
+function loadFile(filePath) {
+    const req = new XMLHttpRequest();
+    req.open("GET", filePath, true);
+    req.responseType = "arraybuffer";
+    req.onload = (event) => {
+        const arrayBuffer = req.response;
+        if (arrayBuffer) {
+            console.log("A AM HERE" + arrayBuffer.byteLength);
+            const byteArray = new Uint8Array(arrayBuffer); 
+            byteArray.forEach((element, index) => {});
+            ReadBin(arrayBuffer, 0);
+        }
+    };
+    req.send(null);
+}
+
 function OnMouseMove(e) {
     gv.mouseX = e.offsetX;
     gv.mouseY = e.offsetY;
@@ -88,6 +104,15 @@ function GetFovValue(){
     return document.getElementById("fovVal").value; 
 }
 
+function GetDrawAll(){
+    rt = document.getElementById("rdAll").value; 
+    if(rt == "on"){
+        console.log("GetDrawAll" + rt);
+        return 1;
+    }
+    return 0;
+}
+
 function GetUIString(){
     return gIdChanged;
 }
@@ -97,7 +122,7 @@ function SetColorMode(){
 }
 
 function UpdateColorModeUI(){
-    const ids = ["colrgbId", "colintId", "colhtmId", "colclassId"];
+    const ids = ["colrgbId", "colintId", "colhtmId", "colclassId","colmix"];
     var names_ptr = Module._malloc(16);
     for (const element of ids) {
         Module.HEAPU8.fill(0, names_ptr, names_ptr + 16);
@@ -116,10 +141,6 @@ function UpdateColorModeUI(){
         }
     }
     Module._free(names_ptr);
-  
-   // document.getElementById("colrgbId").checked = true;
-   // var el = document.getElementById("colrgbId");
-   // el.setAttribute("disabled", true);
 }
 
 function OnUIEvent1(input){
@@ -133,6 +154,10 @@ function OnUIEvent1(input){
     if( input.id == "ruler"){
         setRuler(document.getElementById(input.id).checked); 
     }
+    if( input.id == "SampleLasId"){
+        console.log("las id");
+        loadFile("data/sample.las");
+    }
     // gray out some UI elements
     if( input.id == "camOrto"){
         fovEl = document.getElementById("fovVal");
@@ -142,6 +167,7 @@ function OnUIEvent1(input){
             fovEl.removeAttribute('disabled');
         }
     }
+    /*
     if( input.id == "rdAll"){
         budgetEl = document.getElementById("budVal");
         if(document.getElementById(input.id).checked==true){
@@ -150,6 +176,7 @@ function OnUIEvent1(input){
             budgetEl.removeAttribute('disabled');
         }
     }
+    */
 }
 
 function OnBkhanged(input){

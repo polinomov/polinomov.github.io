@@ -104,7 +104,7 @@
       -->
       <input type="file" multiple class="file" id="attach_las"    style="display: none;" accept=".las" onchange="OnFileSelected(this,0)" />
       <input type="file" multiple class="file" id="attach_xyzbin" style="display: none;" accept=".xyz" onchange="OnFileSelected(this,1)" />
-      <input type="file" multiple class="file" id="attach_xyztxt" style="display: none;" accept=".xyz" onchange="OnFileSelected(this,2)" />
+      <input type="file" multiple class="file" id="attach_xyztxt" style="display: none;" accept=".xyz, .txt" onchange="OnFileSelected(this,2)" />
       <button class="dropbtn" id="fbtn" onclick="myFunction('fbtn','fileDropdown')">File</button>
       <div class="dropdown-content" id="fileDropdown">
         <button type="button"  
@@ -112,12 +112,13 @@
             class="thebutton">Load Las
         </button>
         <button type="button"  
-            onclick="document.getElementById('attach_xyzbin').click()"
-            class="thebutton">Load XYZ (bin)
-        </button>
-        <button type="button"  
             onclick="document.getElementById('attach_xyztxt').click()"
             class="thebutton">Load XYZ (ascii)
+        </button>
+        <button type="button" 
+            id="SampleLasId"  
+            onclick="OnUIEvent1(this)"
+            class="thebutton">Try Sample
         </button>
         <button type="button" 
             id="SampleId"  
@@ -134,8 +135,10 @@
       <button class="dropbtn" id="camBtn" onclick="myFunction('camBtn','cameraDropdown')">Camera</button>
       <div class="dropdown-content" id="cameraDropdown">
         <button class="thebutton" id="camReset" onclick="OnUIEvent1(this)">Reset </button>
+        <!--
         <small  class="thetext1"  id="camOr"    onclick="OnUIEvent1(this)">Orthographic</small>
         <input type="checkbox"    id="camOrto"  onclick="OnUIEvent1(this)" title="Orthographic" id="camOrto" />
+        -->
       </div>
        <!-- colors -->
       <button class="dropbtn" id="ColorsId" onclick="myFunction('ColorsId','viewDropdown')">View</button>
@@ -170,7 +173,7 @@
       <input class="thespin" id="budVal" onclick="OnUIEvent1(this)" type="number" min="1" max="100" value="18"/> 
 
       <small class="thetext">DrawAll:</small>
-      <input type="checkbox"  title="Render All" id="rdAll"  onchange="OnUIEvent1(this)"/>
+      <input type="checkbox"  title="Render All" id="rdAll"  onchange="OnUIEvent1(this)" checked/>
 
       <small class="thetext">Ruler:</small>
       <input type="checkbox"  title="Ruler" id="ruler"  onchange="OnUIEvent1(this)"/>
