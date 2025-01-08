@@ -124,7 +124,7 @@ function loadFile(filePath) {
     //eload_cd(0);
     //return;
     const req = new XMLHttpRequest();
-    req.open("GET", 'https://github.com/polinomov/polinomov.github.io/blob/main/data/sample.las', true);
+    req.open("GET", './data/sample.las', true);
     //req.open("GET", filePath, true);
     req.responseType = "arraybuffer";
     req.onload = (event) => {
