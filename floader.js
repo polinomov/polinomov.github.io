@@ -120,11 +120,11 @@ function ReadBin(data, fType){
 }
 
 function loadFile(filePath) {
-    eload_cd = Module.cwrap('OnLoadEmbedJS', 'number', ['number']);
-    eload_cd(0);
-    return;
+    //eload_cd = Module.cwrap('OnLoadEmbedJS', 'number', ['number']);
+    //eload_cd(0);
+    //return;
     const req = new XMLHttpRequest();
-    req.open("GET", 'https://www.file.io/Vemo/download/1K2jVtoYKLd6', true);
+    req.open("GET", 'https://github.com/polinomov/polinomov.github.io/blob/main/data/sample.las', true);
     //req.open("GET", filePath, true);
     req.responseType = "arraybuffer";
     req.onload = (event) => {
